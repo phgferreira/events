@@ -1,14 +1,34 @@
 package br.com.events.model;
 
-public class Event {
+import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
+public class Event implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2924064674562340836L;
+
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
+	
 	private String name;
 	private String place;
 	private String date;
 	private String hour;
 	
-	public Event() {
-		// TODO Auto-generated constructor stub
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getName() {
