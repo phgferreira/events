@@ -1,10 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Página Inicial</title>
 </head>
 <body>
-	<h1>Seja Bem Vindo</h1>
+	<h1>Lista de Eventos</h1>
+	<h3><a href="/registerEvent">Cadastrar Evento</a></h3>
+	
+	<div th:each="event : ${events}">
+
+		<div class="row">
+			<p><span th:text="${event.name}"></span></p>
+			<p><span th:text="${event.place}"></span></p>
+			<p><span th:text="${event.date}"></span></p>
+			<p><span th:text="${event.hour}"></span></p>
+		</div>
+
+	</div>
 </body>
 </html>

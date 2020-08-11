@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import br.com.events.model.Event;
 import br.com.events.repository.EventRepository;
@@ -21,9 +22,18 @@ public class EventController {
 
 	@RequestMapping(value = "/registerEvent", method = RequestMethod.POST)
 	public String form(Event e) {
-		
 		er.save(e);
-		
+		// Depois de salvar redireciona para a mesma página
 		return "redirect:/registerEvent";
+	}
+	
+	@RequestMapping("/listEvents")
+	public ModelAndView list() {
+		ModelAndView mv = new ModelAndView("index");
+		// Retorna lista de eventos
+		Iterable<Event> events = er.findAll();
+		// events é o nome da lista na view
+		mv.addObject("events", events);
+		return mv;
 	}
 }
