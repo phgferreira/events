@@ -1,11 +1,13 @@
 package br.com.events.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Event implements Serializable {
@@ -22,6 +24,9 @@ public class Event implements Serializable {
 	private String place;
 	private String date;
 	private String hour;
+	
+	@OneToMany
+	private List<Guest> guests;
 	
 	public Integer getId() {
 		return id;
@@ -61,5 +66,13 @@ public class Event implements Serializable {
 
 	public void setHour(String hour) {
 		this.hour = hour;
+	}
+
+	public List<Guest> getGuests() {
+		return guests;
+	}
+
+	public void setGuests(List<Guest> guests) {
+		this.guests = guests;
 	}
 }
