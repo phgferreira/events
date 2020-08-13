@@ -46,8 +46,14 @@ public class EventController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ModelAndView detailEvent(@PathVariable("id") Integer id) {
 		ModelAndView mv = new ModelAndView("event/detailEvent");
+
+		// Carrega o evento
 		Event e = er.findById(id).get();
 		mv.addObject("event", e);
+		
+		// Carrega os convidados do evento
+		Iterable<Guest> g = gr.findByEvent(e);
+		mv.addObject("guests", g);
 		return mv;
 	}
 
