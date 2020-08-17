@@ -2,10 +2,13 @@ package br.com.events.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.events.model.Event;
 import br.com.events.model.Guest;
@@ -27,10 +30,15 @@ public class EventController {
 	}
 
 	@RequestMapping(value = "/registerEvent", method = RequestMethod.POST)
-	public String form(Event e) {
-		er.save(e);
-		// Depois de salvar redireciona para a mesma página
-		return "redirect:/registerEvent";
+	public String save(@Validated Event e, BindingResult result, RedirectAttributes attributes) {
+		if(result.hasErrors()) {
+			attributes.addFlashAttribute("msg", "Verifique os campos");
+			return "redirect:/registerEvent";
+		} else {
+			er.save(e);
+			attributes.addFlashAttribute("msg", "Evento cadastrado com sucesso");
+			return "redirect:/registerEvent";
+		}
 	}
 	
 	@RequestMapping("/listEvents")
@@ -53,18 +61,25 @@ public class EventController {
 		
 		// Carrega os convidados do evento
 		Iterable<Guest> g = gr.findByEvent(e);
-		mv.addObject("guests", g);
+		mv.addObject("guests", 	g);
 		return mv;
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
-	public String detailEventAddGuest(@PathVariable("id") Integer id, Guest guest) {
+	public String detailEventAddGuest(@PathVariable("id") Integer id, @Validated Guest guest, BindingResult result, RedirectAttributes attributes) {
+		
 		// Buscamos o evento no banco de dados
 		Event e = er.findById(id).get();
-		// Inserimos o evento no convidado
+		// Atribui o evento ao convidado
 		guest.setEvent(e);
-		// Salvamos o convidado com o evento relacionado
-		gr.save(guest);
+
+		if (result.hasErrors()) {
+			attributes.addFlashAttribute("msg", "ERRO: Verifique os campos");
+		} else {
+			gr.save(guest);
+			attributes.addFlashAttribute("msg", "Convidado inserido com sucesso");
+		}
+
 		return "redirect:/{id}";
 	}
 	

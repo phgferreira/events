@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Guest implements Serializable{
@@ -20,14 +21,19 @@ public class Guest implements Serializable{
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	
+	@Column @NotBlank
 	private String name;
 	
-	@Column(unique = true)
+	@Column(unique = true) @NotBlank
 	private String rg;
 	
 	@ManyToOne
 	private Event event;
 	
+	@Override
+	public String toString() {
+		return "Guest [id=" + id + ", name=" + name + ", rg=" + rg + ", event=" + event + "]";
+	}
 	public Integer getId() {
 		return id;
 	}
