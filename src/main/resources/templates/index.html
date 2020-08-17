@@ -9,16 +9,24 @@
 	<!--Let browser know website is optimized for mobile-->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
+	<link type="text/css" rel="stylesheet" href="css/default.css"/>
+
 	<meta charset="UTF-8">
 	<title>Página Inicial</title>
 </head>
 <body>
-	<h1>Lista de Eventos</h1>
-	<h3>
-		<a class="waves-effect waves-light btn" href="/registerEvent"><i class="material-icons left">add_circle_outline</i>Cadastrar Evento</a>
-	</h3>
-	
-	
+
+	<nav>
+		<div class="nav-wrapper">
+			<a href="/index" class="brand-logo">Lista de Eventos</a>
+			<ul id="nav-mobile" class="right hide-on-med-and-down">
+				<li>
+					<a class="waves-effect waves-light btn" href="/registerEvent"><i class="material-icons left">add_circle_outline</i>Cadastrar Evento</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
 	<div class="container">
 	<table>
 		<thead>
