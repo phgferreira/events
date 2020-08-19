@@ -58,6 +58,9 @@
 				<tr th:each="guest : ${guests}">
 					<td><span th:text="${guest.name}"></span></td>
 					<td><span th:text="${guest.rg}"></span></td>
+					<td>
+						<a th:href="${(#mvc.url('EC#deleteGuest').arg(0, guest.rg)).build()}"><i class="material-icons">delete_forever</i></a>
+					</td>
 				<tr/>
 			</tbody>
 		</table>

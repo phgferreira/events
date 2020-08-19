@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 public class Event implements Serializable {
 
@@ -32,6 +35,7 @@ public class Event implements Serializable {
 	private String hour;
 	
 	@OneToMany(mappedBy = "event")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Guest> guests;
 	
 	public Integer getId() {

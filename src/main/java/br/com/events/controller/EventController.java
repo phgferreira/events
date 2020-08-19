@@ -83,5 +83,19 @@ public class EventController {
 		return "redirect:/{id}";
 	}
 	
+	@RequestMapping("/deleteEvent")
+	public String deleteEvent(Integer id) {
+		Event e = er.findById(id).get();
+		er.delete(e);
+		return "redirect:/listEvents";
+	}
+	
+	@RequestMapping("/deleteGuest")
+	public String deleteGuest(String rg) {
+		Guest g = gr.findByRg(rg);
+		gr.delete(g);
+		return "redirect:/" + g.getEvent().getId();
+		
+	}
 	
 }
