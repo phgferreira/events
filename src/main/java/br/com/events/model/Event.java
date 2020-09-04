@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,6 +27,7 @@ public class Event implements Serializable {
 	
 	@NotBlank
 	private String name;
+	
 	private String place;
 	
 	@NotBlank
@@ -34,10 +36,17 @@ public class Event implements Serializable {
 	@NotBlank
 	private String hour;
 	
-	@OneToMany(mappedBy = "event")
+	// LAZY para só carregar quando necessário
+	@OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Guest> guests;
 	
+	@Override
+	public String toString() {
+		return "Event [id=" + id + ", name=" + name + ", place=" + place + ", date=" + date + ", hour=" + hour
+				+ ", guests=" + guests + "]";
+	}
+
 	public Integer getId() {
 		return id;
 	}

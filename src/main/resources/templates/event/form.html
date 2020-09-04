@@ -2,11 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-	<!--Import Google Icon Font-->
+
+	<!-- Materialize CSS -->
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<!--Import materialize.css-->
 	<link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
-	<!--Let browser know website is optimized for mobile-->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 	<link type="text/css" rel="stylesheet" href="css/default.css"/>
@@ -20,9 +19,8 @@
 		<div class="nav-wrapper">
 			<a href="/index" class="brand-logo">Cadastro de Evento</a>
 			<ul id="nav-mobile" class="right hide-on-med-and-down">
-				<li>
-					<a href="/listEvents" class="waves-effect waves-light btn"><i class="material-icons left">format_list_bulleted</i>Lista de Eventos</a>
-				</li>
+				<li><a href="/eventList" class="waves-effect waves-light btn"><i class="material-icons left">format_list_bulleted</i>Lista de Eventos</a></li>
+				<li><a href="/logout" class="waves-effect waves-light btn"><i class="material-icons left">power_settings_new</i>Logout</a></li>
 			</ul>
 		</div>
 	</nav>
@@ -38,9 +36,9 @@
 		<button type="submit" class="btn waves-effect waves-light">Salvar</button>
 	</form>
 	
-	<th:block th:include="/event/msgValid" />
+	<th:block th:include="/errors/InvalidFields" />
 	
-	<!--JavaScript at end of body for optimized loading-->
+	<!-- Materialize Javascript -->
 	<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
 
 </body>

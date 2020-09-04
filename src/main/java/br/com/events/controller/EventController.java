@@ -24,77 +24,83 @@ public class EventController {
 	@Autowired
 	private GuestRepository gr;
 	
-	@RequestMapping(value = "/registerEvent", method = RequestMethod.GET)
+	@RequestMapping(value = "/eventForm", method = RequestMethod.GET)
 	public String form() {
-		return "event/registerEvent";
+		return "event/form";
 	}
 
-	@RequestMapping(value = "/registerEvent", method = RequestMethod.POST)
+	@RequestMapping(value = "/eventForm", method = RequestMethod.POST)
 	public String save(@Validated Event e, BindingResult result, RedirectAttributes attributes) {
 		if(result.hasErrors()) {
 			attributes.addFlashAttribute("msg", "Verifique os campos");
-			return "redirect:/registerEvent";
 		} else {
 			er.save(e);
 			attributes.addFlashAttribute("msg", "Evento cadastrado com sucesso");
-			return "redirect:/registerEvent";
 		}
+		return "event/form";
 	}
 	
-	@RequestMapping("/listEvents")
+	@RequestMapping("/eventList")
 	public ModelAndView list() {
-		ModelAndView mv = new ModelAndView("index");
-		// Retorna lista de eventos
-		Iterable<Event> events = er.findAll();
-		// events é o nome da lista na view
-		mv.addObject("events", events);
+		ModelAndView mv = new ModelAndView("event/list");
+
+		Iterable<Event> e = er.findAll();
+		mv.addObject("events", e);
+
 		return mv;
 	}
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ModelAndView detailEvent(@PathVariable("id") Integer id) {
-		ModelAndView mv = new ModelAndView("event/detailEvent");
+	@RequestMapping(value = "/eventDetail{id}", method = RequestMethod.GET)
+	public ModelAndView detail(@PathVariable("id") Integer id) {
+		ModelAndView mv = new ModelAndView("event/detail");
 
-		// Carrega o evento
 		Event e = er.findById(id).get();
 		mv.addObject("event", e);
 		
-		// Carrega os convidados do evento
 		Iterable<Guest> g = gr.findByEvent(e);
 		mv.addObject("guests", 	g);
 		return mv;
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
-	public String detailEventAddGuest(@PathVariable("id") Integer id, @Validated Guest guest, BindingResult result, RedirectAttributes attributes) {
-		
-		// Buscamos o evento no banco de dados
+	
+	@RequestMapping("/eventDelete")
+	public String delete(Integer id) {
+
 		Event e = er.findById(id).get();
-		// Atribui o evento ao convidado
+		er.delete(e);
+
+		return "redirect:/eventList";
+	}
+
+	
+	// ################### GUEST ###################
+	// O Formulário do convidado está dentro de datail do Evento
+	@RequestMapping(value = "/eventDetail{id}", method = RequestMethod.POST)
+	public String addGuest(@PathVariable("id") Integer id, @Validated Guest guest, BindingResult result, RedirectAttributes attributes) {
+		
+		// Carregamos o evento e jogando para o convidado
+		Event e = er.findById(id).get();
 		guest.setEvent(e);
 
 		if (result.hasErrors()) {
 			attributes.addFlashAttribute("msg", "ERRO: Verifique os campos");
 		} else {
+			// Salvamos o convidado com o Evento setado
 			gr.save(guest);
 			attributes.addFlashAttribute("msg", "Convidado inserido com sucesso");
 		}
 
-		return "redirect:/{id}";
+		// Volta para a página de detail
+		return "redirect:/eventDetail{id}";
 	}
 	
-	@RequestMapping("/deleteEvent")
-	public String deleteEvent(Integer id) {
-		Event e = er.findById(id).get();
-		er.delete(e);
-		return "redirect:/listEvents";
-	}
-	
-	@RequestMapping("/deleteGuest")
-	public String deleteGuest(String rg) {
+	@RequestMapping("/removeGuest")
+	public String removeGuest(String rg) {
 		Guest g = gr.findByRg(rg);
 		gr.delete(g);
-		return "redirect:/" + g.getEvent().getId();
+
+		// Volta para a página de detail
+		return "redirect:/eventDetail" + g.getEvent().getId();
 		
 	}
 	
