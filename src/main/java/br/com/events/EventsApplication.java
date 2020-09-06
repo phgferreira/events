@@ -10,7 +10,7 @@ public class EventsApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(EventsApplication.class, args);
 		
-		System.out.println("Senha:" + new BCryptPasswordEncoder().encode("admin"));
+		System.out.println("Senha:" + new BCryptPasswordEncoder().encode("user"));
 	}
 
 }

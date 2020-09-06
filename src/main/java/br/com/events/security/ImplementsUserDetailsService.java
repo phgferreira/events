@@ -1,6 +1,9 @@
 package br.com.events.security;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,6 +13,7 @@ import br.com.events.model.UserAccount;
 import br.com.events.repository.UserAccountRepository;
 
 @Repository
+@Transactional
 public class ImplementsUserDetailsService implements UserDetailsService {
 
 	@Autowired
@@ -21,8 +25,13 @@ public class ImplementsUserDetailsService implements UserDetailsService {
 		
 		if (u == null)
 			throw new UsernameNotFoundException("Usuário não encontrado");
-		else return u;
-		
+//		else return new UserAccount(u.getUsername(), u.getPassword(), true, true, true, true, u.getAuthorities());
+		else {
+			for (GrantedAuthority i : u.getAuthorities()) {
+				System.out.println("## Autorização " + u.getUsername() + ": " + i.getAuthority() + " ##");
+			}
+			return u;
+		}
 	}
 
 }
